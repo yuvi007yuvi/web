@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Upload Form</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      font-family: Arial, sans-serif;
+    }
+    .form-container {
+      margin-top: 50px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-control {
+      background-color: #333;
+      color: #fff;
+    }
+    .form-control-file {
+      cursor: pointer;
+    }
+    .btn-primary {
+      background-color: #f40612;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #e60000;
+    }
+    .progress {
+      height: 20px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      background-color: #444;
+      border-radius: 4px;
+    }
+    .progress-bar {
+      background-color: #f40612;
+      transition: width 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="container form-container">
+    <h1 class="text-center text-white">Movie Upload Form</h1>
+    <form id="uploadForm">
+      <div class="form-group">
+        <label for="title" class="text-white">Title:</label>
+        <input type="text" class="form-control" id="title" required>
+      </div>
+      <div class="form-group">
+        <label for="description" class="text-white">Description:</label>
+        <textarea class="form-control" id="description" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="movieFile" class="text-white">Select Movie:</label>
+        <input type="file" class="form-control-file" id="movieFile" accept="video/*" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Upload Movie</button>
+    </form>
+    <div class="progress">
+      <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCLDb00r-c_zJ1_XMGm3Oafj_dl2VU6Qac",
+      authDomain: "movieweb-53dbb.firebaseapp.com",
+      projectId: "movieweb-53dbb",
+      storageBucket: "movieweb-53dbb.appspot.com",
+      messagingSenderId: "265018969915",
+      appId: "1:265018969915:web:7f22c68670c1496109f11e",
+      measurementId: "G-5YDZT022VX"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Upload movie function
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent form submission
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const movieFile = document.getElementById('movieFile').files[0];
+
+      // Reference to Firebase storage bucket
+      const storageRef = firebase.storage().ref();
+      const movieRef = storageRef.child('movies/' + movieFile.name);
+
+      // Upload movie file
+      const uploadTask = movieRef.put(movieFile);
+
+      // Update progress bar while uploading
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          // Calculate upload percentage
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          document.getElementById('progressBar').style.width = `${progress}%`;
+        },
+        (error) => {
+          console.error('Error uploading movie:', error);
+          alert('An error occurred while uploading the movie. Please try again.');
+        },
+        () => {
+          console.log('Movie uploaded successfully');
+          // Clear form after successful upload
+          document.getElementById('title').value = '';
+          document.getElementById('description').value = '';
+          document.getElementById('movieFile').value = '';
+          // Reset progress bar after upload completes
+          document.getElementById('progressBar').style.width = '0%';
+          alert('Movie uploaded successfully!');
+        }
+      );
+    });
+  </script>
+</body>
+</html>

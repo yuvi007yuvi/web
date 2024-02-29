@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>yuvraj</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      background-color: #000 !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand {
+      font-size: 38px;
+      font-weight: bold;
+      color: #f40612 !important;
+    }
+    .navbar-nav .nav-link {
+  color: #f40612 !important; /* Red color */
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+    .navbar-nav .nav-link:hover {
+      color: #ccc !important;
+    }
+    .navbar-dark .navbar-toggler-icon {
+      border-color: #ff1111;
+    }
+    .navbar-toggler {
+      border: none;
+    }
+    .navbar-toggler:focus {
+      outline: none;
+    }
+    .navbar-toggler:hover {
+      opacity: 0.8;
+    }
+    .navbar-collapse {
+      justify-content: flex-end;
+    }
+    .card {
+      margin-bottom: 20px;
+      background-color: #000;
+      border: none;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card-title {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .card-text {
+      color: #fff;
+    }
+    .footer {
+      background-color: #000;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    .search-bar {
+      border: 2px solid #f40612; /* Red border color */
+      border-radius: 5px;
+      padding: 8px 12px;
+      color: #fff;
+      background-color: transparent;
+    }
+    .search-bar:focus {
+      outline: none;
+      border-color: #f40612;
+      box-shadow: 0 0 0 2px rgba(244, 6, 18, 0.2);
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">YUVI</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">TV Shows</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Movies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">My List</a>
+        </li>
+      </ul>
+      <button id="adminButton" class="btn btn-outline-danger mr-2">Admin</button>
+      <!-- Search bar -->
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search movies..." aria-label="Search">
+        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+  
+
+ <!-- Hero Section -->
+<div class="jumbotron text-center" style="background-image: url('https://raw.githubusercontent.com/thatanjan/netflix-clone-yt/youtube/media//banner.jpg');">
+    <h1 style="color: #f40612; background-color: #000000b3; font-weight:bold;">Welcome to Movie Stream</h1>
+    <p style="color: #fff;background-color: #090303;">Watch your favorite movies and TV shows anytime, anywhere.</p>
+    <!-- Remove hardcoded video URL -->
+  </div>
+  
+
+  <!-- Movie Cards -->
+  <div class="container" id="movieContainer">
+    <div class="row">
+      <!-- Movie cards will be dynamically added here -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <span> Created by ❤️ YUVRAJ &copy; 2024</span>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCLDb00r-c_zJ1_XMGm3Oafj_dl2VU6Qac",
+      authDomain: "movieweb-53dbb.firebaseapp.com",
+      projectId: "movieweb-53dbb",
+      storageBucket: "movieweb-53dbb.appspot.com",
+      messagingSenderId: "265018969915",
+      appId: "1:265018969915:web:7f22c68670c1496109f11e",
+      measurementId: "G-5YDZT022VX"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to handle movie playback
+    function playMovie(event) {
+      const movieUrl = event.target.getAttribute('data-movie-url');
+      // Redirect or load movie URL in a video player
+      window.location.href = movieUrl;
+    }
+
+    // Fetch movies from Firebase Storage
+    const storage = firebase.storage();
+    const storageRef = storage.ref();
+    const moviesRef = storageRef.child('movies');
+
+    moviesRef.listAll().then(function(res) {
+      res.items.forEach(function(itemRef) {
+        // Get the download URL for the movie
+        itemRef.getDownloadURL().then(function(movieUrl) {
+          // Create movie card
+          const movieCard = document.createElement('div');
+          movieCard.classList.add('col-md-4', 'mb-4');
+          movieCard.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <!-- Embed video directly in the card -->
+                <video controls>
+                  <source src="${movieUrl}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <h5 class="card-title">${itemRef.name}</h5>
+              </div>
+            </div>
+          `;
+          // Append movie card to container
+          document.getElementById('movieContainer').querySelector('.row').appendChild(movieCard);
+        });
+      });
+    }).catch(function(error) {
+      console.error("Error fetching movies:", error);
+    });
+  </script>
+</body>
+</html>
