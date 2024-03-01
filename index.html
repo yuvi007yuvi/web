@@ -109,6 +109,7 @@
         </li>
       </ul>
       <a  href="login.html"><button  id="adminButton" class="btn btn-outline-danger mr-2">Admin</button></a>
+      <a  href="Userlogin.html"><button  id="adminButton" class="btn btn-outline-danger mr-2">User login</button></a>
       <!-- Search bar -->
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search movies..." aria-label="Search">
@@ -121,12 +122,41 @@
 
  <!-- Hero Section -->
 <div class="jumbotron text-center" style="background-image: url('https://raw.githubusercontent.com/thatanjan/netflix-clone-yt/youtube/media//banner.jpg');">
-    <h1 style="color: #f40612; background-color: #000000b3; font-weight:bold;">Welcome to Movie Stream</h1>
-    <p style="color: #fff;background-color: #090303;">Watch your favorite movies and TV shows anytime, anywhere.</p>
-    <!-- Remove hardcoded video URL -->
-  </div>
-  
+  <h1 style="color: #f40612; background-color: #000000b3; font-weight:bold;">Welcome to Movie Stream</h1>
+  <p style="color: #fff;background-color: #090303;">Watch your favorite movies and TV shows anytime, anywhere.</p>
+  <!-- Request Movies Button -->
+  <button id="requestMoviesButton" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#requestModal">Request Movies</button>
+</div>
 
+<!-- Modal for Movie Requests -->
+<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="requestModalLabel">Request Movies</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form id="movieRequestForm">
+                  <div class="form-group">
+                      <label for="movieTitle">Movie Title:</label>
+                      <input type="text" class="form-control" id="movieTitle" required>
+                  </div>
+                  <div class="form-group">
+                      <label for="movieDescription">Description:</label>
+                      <textarea class="form-control" id="movieDescription" rows="3" required></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-danger">Submit Request</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+  
+<h2>Trending</h2>
   <!-- Movie Cards -->
   <div class="container" id="movieContainer">
     <div class="row">

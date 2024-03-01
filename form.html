@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Netflix UI Login & Signup</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<link rel="stylesheet"  href="./style.css">
+<style>
+  body {
+    background-color: #000;
+    font-family: Arial, sans-serif;
+  }
+
+  .form-container {
+    background-color: #111;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.8);
+    text-align: center;
+    width: 400px;
+    margin: auto;
+    margin-top: 100px;
+  }
+
+  h1 {
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  input[type="email"], input[type="password"], input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e50914;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #ff181e;
+  }
+
+  .form-link {
+    color: #f40612;
+    font-size: 14px;
+  }
+
+  .form-link a {
+    color: #f40612;
+    text-decoration: none;
+  }
+
+  .form-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<div class="form-container">
+  <h1>Welcome to Netflix</h1>
+  <div id="loginForm">
+    <h2>Login</h2>
+    <form id="loginForm" onsubmit="return login()">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <input type="submit" value="Login">
+    </form>
+    <p class="form-link">Don't have an account? <a href="#" onclick="toggleForm()">Sign Up</a></p>
+  </div>
+  <div id="signupForm" style="display: none;">
+    <h2>Sign Up</h2>
+    <form id="signupForm" onsubmit="return signup()">
+      <input type="text" id="signupName" placeholder="Full Name" required>
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <input type="submit" value="Sign Up">
+    </form>
+    <p class="form-link">Already have an account? <a href="#" onclick="toggleForm()">Login</a></p>
+  </div>
+</div>
+
+<script>
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+
+  function toggleForm() {
+    loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+    signupForm.style.display = signupForm.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // Rest of your Firebase authentication code goes here...
+</script>
+</body>
+</html>

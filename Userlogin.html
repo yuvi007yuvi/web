@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page | YUVRAJ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="#"><img src="images/logo.svg" alt="logo"></a>
+    </nav>
+    <div class="form-wrapper" id="loginFormWrapper">
+        <h2>Sign In</h2>
+        <form id="loginForm" onsubmit="return false;">
+            <div class="form-control">
+                <input type="email" id="loginEmail" required>
+                <label>Email or phone number</label>
+            </div>
+            <div class="form-control">
+                <input type="password" id="loginPassword" required>
+                <label>Password</label>
+            </div>
+            <button type="button" onclick="login()">Sign In</button>
+            <div class="form-help"> 
+                <div class="remember-me">
+                    <input type="checkbox" id="remember-me">
+                    <label for="remember-me">Remember me</label>
+                </div>
+                <a href="#" onclick="toggleSignup()">New hear? Sign up now</a>
+            </div>
+            <button onclick="loginWithGoogle()">Sign in with Google</button>
+        </form>
+        <p id="loginMessage"></p>
+    </div>
+
+    <div class="form-wrapper" id="signupForm" style="display: none;">
+        <h2>Sign Up</h2>
+        <form id="signupForm" onsubmit="return false;">
+            <div class="form-control">
+                <input type="text" id="signupName" required>
+                <label>Full Name</label>
+            </div>
+            <div class="form-control">
+                <input type="email" id="signupEmail" required>
+                <label>Email</label>
+            </div>
+            <div class="form-control">
+                <input type="password" id="signupPassword" required>
+                <label>Password</label>
+            </div>
+            <button type="button" onclick="signup()">Sign Up</button>
+        </form>
+        <p id="signupMessage"></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLDb00r-c_zJ1_XMGm3Oafj_dl2VU6Qac",
+            authDomain: "movieweb-53dbb.firebaseapp.com",
+            projectId: "movieweb-53dbb",
+            storageBucket: "movieweb-53dbb.appspot.com",
+            messagingSenderId: "265018969915",
+            appId: "1:265018969915:web:7f22c68670c1496109f11e",
+            measurementId: "G-5YDZT022VX"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        function toggleSignup() {
+            var signupForm = document.getElementById("signupForm");
+            var loginFormWrapper = document.getElementById("loginFormWrapper");
+            if (signupForm.style.display === "none") {
+                signupForm.style.display = "block";
+                loginFormWrapper.style.display = 'none';
+            } else {
+                signupForm.style.display = "none";
+                loginFormWrapper.style.display = 'block';
+            }
+        }
+
+        function login() {
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in successfully
+                    console.log("Login successful:", userCredential.user);
+                    document.getElementById("loginMessage").innerText = "Login successful!";
+                    document.getElementById("loginMessage").style.color = "green";
+                    // Redirect to the home page
+                    window.location.href = "home.html"; // Replace "home.html" with your home page URL
+                })
+                .catch((error) => {
+                    // Handle errors
+                    console.error("Login failed:", error.message);
+                    document.getElementById("loginMessage").innerText = "Login failed. Please check your credentials and try again.";
+                    document.getElementById("loginMessage").style.color = "red";
+                });
+        }
+
+        function signup() {
+            const email = document.getElementById("signupEmail").value;
+            const password = document.getElementById("signupPassword").value;
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed up successfully
+                    console.log("Signup successful:", userCredential.user);
+                    document.getElementById("signupMessage").innerText = "Signup successful!";
+                    document.getElementById("signupMessage").style.color = "green";
+                })
+                .catch((error) => {
+                    // Handle errors
+                    console.error("Signup failed:", error.message);
+                    document.getElementById("signupMessage").innerText = "Signup failed. Please try again.";
+                    document.getElementById("signupMessage").style.color = "red";
+                });
+        }
+
+        function loginWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Signed in successfully with Google
+                    console.log("Login with Google successful:", result.user);
+                    document.getElementById("loginMessage").innerText = "Login with Google successful!";
+                    document.getElementById("loginMessage").style.color = "green";
+                    // Redirect to the home page
+                    window.location.href = "home.html"; // Replace "home.html" with your home page URL
+                })
+                .catch((error) => {
+                    // Handle errors
+                    console.error("Login with Google failed:", error.message);
+                    document.getElementById("loginMessage").innerText = "Login with Google failed. Please try again.";
+                    document.getElementById("loginMessage").style.color = "red";
+                });
+        }
+    </script>
+</body>
+</html>

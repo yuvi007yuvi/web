@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Home Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Your Netflix UI style CSS here */
+        body {
+            background-color: #000;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            padding-top: 50px;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        nav img {
+            height: 40px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .category {
+            margin-bottom: 30px;
+        }
+
+        .category h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .video {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .video:hover {
+            background-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#"><img src="images/logo.svg" alt="Netflix Logo"></a>
+    </nav>
+    <div class="container">
+        <div id="trending" class="category">
+            <h2>Trending</h2>
+        </div>
+        <div id="trailers" class="category">
+            <h2>Trailers</h2>
+        </div>
+        <div id="movies" class="category">
+            <h2>Movies</h2>
+        </div>
+        <div id="hollywood" class="category">
+            <h2>Hollywood</h2>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script>
+       const firebaseConfig = {
+    apiKey: "AIzaSyCLDb00r-c_zJ1_XMGm3Oafj_dl2VU6Qac",
+    authDomain: "movieweb-53dbb.firebaseapp.com",
+    projectId: "movieweb-53dbb",
+    storageBucket: "movieweb-53dbb.appspot.com",
+    messagingSenderId: "265018969915",
+    appId: "1:265018969915:web:7f22c68670c1496109f11e",
+    measurementId: "G-5YDZT022VX",
+    databaseURL: "https://movieweb-53dbb-default-rtdb.firebaseio.com"
+};
+
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database
+        const database = firebase.database();
+
+        // Function to fetch video data from Firebase
+        function fetchVideos(category) {
+            const videosRef = database.ref('categories/' + category);
+            videosRef.once('value', (snapshot) => {
+                const videos = snapshot.val();
+                displayVideos(category, videos);
+            });
+        }
+
+        // Function to display fetched videos on the page
+        function displayVideos(category, videos) {
+            const categoryContainer = document.getElementById(category);
+            categoryContainer.innerHTML = ''; // Clear previous content
+            if (videos) {
+                Object.keys(videos).forEach((key) => {
+                    const videoElement = document.createElement('div');
+                    videoElement.classList.add('video');
+                    videoElement.textContent = videos[key].title;
+                    categoryContainer.appendChild(videoElement);
+                });
+            }
+        }
+
+        // Fetch videos for each category
+        fetchVideos('trending');
+        fetchVideos('trailers');
+        fetchVideos('movies');
+        fetchVideos('hollywood');
+    </script>
+</body>
+</html>
